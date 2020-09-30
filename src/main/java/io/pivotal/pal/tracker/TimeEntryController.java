@@ -46,8 +46,15 @@ public class TimeEntryController {
         }
     }
 
-    public ResponseEntity update(long timeEntryId, TimeEntry expected) {
-        return null;
+    @PutMapping("{timeEntryId}")
+    public ResponseEntity update(@PathVariable long timeEntryId, @RequestBody TimeEntry expected) {
+        TimeEntry timeEntryUpdated = this.timeEntryRepository.update(timeEntryId, expected);
+
+        if (timeEntryUpdated != null) {
+            return new ResponseEntity<>(timeEntryUpdated, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     public ResponseEntity delete(long timeEntryId) {
