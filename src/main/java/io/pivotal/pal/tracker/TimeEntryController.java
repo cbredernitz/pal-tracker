@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -30,12 +31,19 @@ public class TimeEntryController {
         if (timeEntryRead != null) {
             return new ResponseEntity<>(timeEntryRead, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
+    @GetMapping()
     public ResponseEntity<List<TimeEntry>> list() {
-        return null;
+        List<TimeEntry> timeEntries = this.timeEntryRepository.list();
+
+        if(timeEntries != null) {
+            return new ResponseEntity<>(timeEntries, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     public ResponseEntity update(long timeEntryId, TimeEntry expected) {
