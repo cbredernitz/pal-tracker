@@ -2,10 +2,7 @@ package io.pivotal.pal.tracker;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,8 +23,15 @@ public class TimeEntryController {
         return new ResponseEntity<>(timeEntryCreated, HttpStatus.CREATED);
     }
 
-    public ResponseEntity<TimeEntry> read(long timeEntryId) {
-        return null;
+    @GetMapping("{timeEntryId}")
+    public ResponseEntity<TimeEntry> read(@PathVariable long timeEntryId) {
+        TimeEntry timeEntryRead = this.timeEntryRepository.find(timeEntryId);
+
+        if (timeEntryRead != null) {
+            return new ResponseEntity<>(timeEntryRead, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     public ResponseEntity<List<TimeEntry>> list() {
